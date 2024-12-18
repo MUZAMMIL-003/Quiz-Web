@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz</title>
+    <!-- <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
+      rel="stylesheet"
+    /> -->
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet"> -->
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      /* Modal styles */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+        padding-top: 60px;
+      }
+
+      .modal-content {
+        background-color: #fefefe;
+        margin: 5% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+      }
+
+      .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+      }
+
+      .close:hover,
+      .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      /* Styles for the score container */
+      #score-container {
+        display: none;
+        text-align: center;
+      }
+
+      /* Restart button style */
+      #restartBtn {
+        display: none;
+        text-align: center;
+      }
+
+      #quiz-container {
+        display: none;
+      }
+
+      #submitButton {
+        display: none; /* Initially hide the submit button */
+        margin-top: 20px;
+      }
+
+      #seeAnswersBtn {
+        margin-top: 10px;
+      }
+      /* Text outline using text-stroke (for WebKit browsers like Chrome and Safari) */
+      .h11-stroke {
+        font-size: 50px;
+        font-weight: bold;
+        color: white;
+        -webkit-text-stroke: 2px black;
+      }
+
+      /* Combined text-shadow + text-stroke for broader compatibility */
+      .h11-combined {
+        font-size: 50px;
+        font-weight: bold;
+        color: white;
+        text-shadow: 2px 2px 0px black, -2px -2px 0px black, 2px -2px 0px black,
+          -2px 2px 0px black;
+        -webkit-text-stroke: 2px black;
+      }
+
+      .paragraph {
+        display: flex;
+        justify-content: center;
+      }
+      /* Text outline using text-shadow */
+      .p11 {
+        font-size: 35px;
+        font-weight: bolder;
+        color: white;
+        text-shadow: 2px 2px 0px black, -2px -2px 0px black, 2px -2px 0px black,
+          -2px 2px 0px black;
+      }
+
+      /* Text outline using text-stroke (for WebKit browsers like Chrome and Safari) */
+      .p11-stroke {
+        font-size: 35px;
+        font-weight: bold;
+        color: white;
+        -webkit-text-stroke: 2px black;
+      }
+
+      /* Combined text-shadow + text-stroke for broader compatibility */
+      .p11-combined {
+        font-size: 35px;
+        font-weight: bold;
+        color: white;
+        text-shadow: 2px 2px 0px black, -2px -2px 0px black, 2px -2px 0px black,
+          -2px 2px 0px black;
+        -webkit-text-stroke: 2px black;
+      }
+
+      button {
+        font-size: 1rem;
+        padding: 10px 20px;
+        margin: 10px;
+        border: 2px solid #0099ff;
+        border-radius: 5px;
+        cursor: pointer;
+        background-color: #fff;
+        transition: all 0.3s ease;
+      }
+      select {
+        font-size: 1rem;
+        padding: 10px 20px;
+        margin: 10px;
+        border: 2px solid #d400ff;
+        border-radius: 5px;
+        cursor: pointer;
+        background-color: #fff;
+        transition: all 0.3s ease;
+      }
+      body {
+        /* font-family: "Roboto", sans-serif; */
+        background-color: #f4f6f9;
+        color: #333;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- <img src="https://t4.ftcdn.net/jpg/03/45/88/07/360_F_345880772_zIT2mkdCzTthplO7xqaGGrMspN0jw0ll.jpg" class="image" > -->
+
+    <div class="container">
+      <div class="sector">
+        <div class="heading">
+          <h1 class="h11">JavaScript Quiz</h1>
+        </div>
+        <div class="paragraph">
+          <p class="p11">Select a difficulty and start the quiz!</p>
+        </div>
+ 
+     
+
+      <div id="startBtn">
+        <select id="difficultySelect">
+          <option value="easy">Easy</option>
+          <option value="medium">Medium</option>
+          <option value="hard">Hard</option>
+        </select>
+        <br>
+        <button id="strtB tn" onclick="startQuiz()">Start Quiz</button>
+      </div>
+    </div>
+      <div class="questions">
+        <div id="quiz-container"></div>
+      </div>
+      <div class="button-container">
+        <button id="submitButton" onclick="submitQuiz()" style="display: none">
+          Submit Quiz
+        </button>
+      </div>
+      <div class="heading2">
+        <h2 class="h3">Your Result!</h2>
+      </div>
+      <div id="score-container">
+        <div id="score"></div>
+        <button id="seeAnswersBtn" onclick="seeAnswers()" disabled>
+          See Answers
+        </button>
+      </div>
+
+      <div id="restartBtn">
+        <button id="restart" onclick="restartQuiz()">Restart Quiz</button>
+      </div>
+    </div>
+
+    <!-- Modal for showing answers -->
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div id="answers"></div>
+      </div>
+    </div>
+  </body>
+  <script src="script.js"></script>
+</html>
